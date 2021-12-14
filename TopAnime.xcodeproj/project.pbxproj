@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C62E8D222768F4F500EAF267 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E8D212768F4F500EAF267 /* ApiService.swift */; };
+		C62E8D242768F7AE00EAF267 /* AnimeRawModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */; };
 		C6AF7CF42768EEE10078ACB8 /* TopAnimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */; };
 		C6AF7CF62768EEE10078ACB8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF7CF52768EEE10078ACB8 /* ContentView.swift */; };
 		C6AF7CF82768EEE90078ACB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6AF7CF72768EEE90078ACB8 /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C62E8D212768F4F500EAF267 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeRawModel.swift; sourceTree = "<group>"; };
 		C6AF7CF02768EEE10078ACB8 /* TopAnime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopAnime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopAnimeApp.swift; sourceTree = "<group>"; };
 		C6AF7CF52768EEE10078ACB8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,8 +93,10 @@
 		C6AF7CF22768EEE10078ACB8 /* TopAnime */ = {
 			isa = PBXGroup;
 			children = (
-				C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */,
+				C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */,
+				C62E8D212768F4F500EAF267 /* ApiService.swift */,
 				C6AF7CF52768EEE10078ACB8 /* ContentView.swift */,
+				C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */,
 				C6AF7CF72768EEE90078ACB8 /* Assets.xcassets */,
 				C6AF7CF92768EEE90078ACB8 /* Preview Content */,
 			);
@@ -246,6 +252,8 @@
 			files = (
 				C6AF7CF62768EEE10078ACB8 /* ContentView.swift in Sources */,
 				C6AF7CF42768EEE10078ACB8 /* TopAnimeApp.swift in Sources */,
+				C62E8D222768F4F500EAF267 /* ApiService.swift in Sources */,
+				C62E8D242768F7AE00EAF267 /* AnimeRawModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
