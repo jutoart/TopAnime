@@ -2,7 +2,7 @@
 //  ApiService.swift
 //  TopAnime
 //
-//  Created by Curea Liu on 2021/12/14.
+//  Created by Art Huang on 2021/12/14.
 //  Copyright © 2021 Art Huang. All rights reserved.
 //
 
