@@ -44,16 +44,59 @@ class ApiService {
     }
     
     func fetchTopAnime(type: AnimeType, subType: AnimeSubType, page: Int) async throws -> AnimeRawModel {
-        .init(requestHash: "", top: [])
+        // make sure sub type is valid
+        switch type {
+        case .anime:
+            guard Constant.SubTypeMap.Anime.contains(subType) || Constant.SubTypeMap.Both.contains(subType) else {
+                throw ApiServiceError.configurationError
+            }
+        case .manga:
+            guard Constant.SubTypeMap.Manga.contains(subType) || Constant.SubTypeMap.Both.contains(subType) else {
+                throw ApiServiceError.configurationError
+            }
+        }
+        
+        // generate URL
+        let path = String(format: Constant.PathFormat, type.rawValue, page, subType.rawValue)
+        
+        guard let url = URL(string: Constant.Host + path) else {
+            throw ApiServiceError.configurationError
+        }
+        
+        // retrieve data
+        let data: Data
+        do {
+            (data, _) = try await serviceProvider.data(from: url, delegate: nil)
+        } catch {
+            throw ApiServiceError.apiError
+        }
+        
+        // decode data
+        do {
+            return try Constant.JsonDecoder.decode(AnimeRawModel.self, from: data)
+        } catch let error {
+            print(error)
+            throw ApiServiceError.invalidData
+        }
     }
 }
 
 // MARK: - Constants
 
 extension ApiService {
-    enum SubTypeMap {
-        static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special]
-        static let Manga: [AnimeSubType] = [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua]
-        static let Both: [AnimeSubType] = [.bypopularity, .favorite]
+    private enum Constant {
+        static let Host = "https://api.jikan.moe"
+        static let PathFormat = "/v3/top/%@/%d/%@"
+        static let JsonDecoder: JSONDecoder = {
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return decoder
+        }()
+        
+        enum SubTypeMap {
+            static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special]
+            static let Manga: [AnimeSubType] = [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua]
+            static let Both: [AnimeSubType] = [.bypopularity, .favorite]
+        }
     }
 }

@@ -139,12 +139,12 @@ extension ApiServiceTests {
             XCTAssertNotNil(response, "Should set expected response in test case")
             
             // verify path components
-            XCTAssertEqual(url.pathComponents.count, 5, "There should be 5 components in path")
-            XCTAssertEqual(url.pathComponents[0], "v3")
-            XCTAssertEqual(url.pathComponents[1], "top")
-            XCTAssertNotNil(AnimeType(rawValue: url.pathComponents[2]))
-            XCTAssertNotNil(Int(url.pathComponents[3]))
-            XCTAssertNotNil(AnimeSubType(rawValue: url.pathComponents[4]))
+            XCTAssertEqual(url.pathComponents.count, 6, "There should be 6 components in path")
+            XCTAssertEqual(url.pathComponents[1], "v3")
+            XCTAssertEqual(url.pathComponents[2], "top")
+            XCTAssertNotNil(AnimeType(rawValue: url.pathComponents[3]))
+            XCTAssertNotNil(Int(url.pathComponents[4]))
+            XCTAssertNotNil(AnimeSubType(rawValue: url.pathComponents[5]))
             
             let urlResponse = URLResponse(url: url, mimeType: "", expectedContentLength: .zero, textEncodingName: nil)
             
@@ -153,14 +153,14 @@ extension ApiServiceTests {
                 throw ResponseError.apiError
             case .testRawModel:
                 do {
-                    let data = try JSONSerialization.data(withJSONObject: Constant.TestAnimeRawModel, options: [])
+                    let data = try Constant.JsonEncoder.encode(Constant.TestAnimeRawModel)
                     return (data, urlResponse)
                 } catch {
                     throw ResponseError.testFailure
                 }
             case .invalidRawModel:
                 do {
-                    let data = try JSONSerialization.data(withJSONObject: Constant.InvalidAnimeRawModel, options: [])
+                    let data = try Constant.JsonEncoder.encode(Constant.InvalidAnimeRawModel)
                     return (data, urlResponse)
                 } catch {
                     throw ResponseError.testFailure
@@ -187,6 +187,11 @@ extension ApiServiceTests {
                         endDate: nil)]
         )
         static let InvalidAnimeRawModel = "Invalid anime raw model"
+        static let JsonEncoder: JSONEncoder = {
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            return encoder
+        }()
         
         enum SubTypeMap {
             static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special]
