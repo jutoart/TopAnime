@@ -8,12 +8,12 @@
 
 import Foundation
 
-enum AnimeType: CaseIterable {
+enum AnimeType: String, CaseIterable {
     case anime
     case manga
 }
 
-enum AnimeSubType: CaseIterable {
+enum AnimeSubType: String, CaseIterable {
     case airing
     case upcoming
     case tv
@@ -37,13 +37,13 @@ enum ApiServiceError: Error {
 }
 
 class ApiService {
-    private let urlSession: URLSession
+    private let serviceProvider: ApiServiceProvider
     
-    init(urlSession: URLSession = .shared) {
-        self.urlSession = urlSession
+    init(serviceProvider: ApiServiceProvider = URLSession.shared) {
+        self.serviceProvider = serviceProvider
     }
     
-    func fetchTopAnime(type: AnimeType, subType: AnimeSubType) async throws -> AnimeRawModel {
+    func fetchTopAnime(type: AnimeType, subType: AnimeSubType, page: Int) async throws -> AnimeRawModel {
         .init(requestHash: "", top: [])
     }
 }

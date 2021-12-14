@@ -16,7 +16,7 @@ struct AnimeRawModel: Codable {
         let imageUrl: URL?
         let type: String
         let startDate: String
-        let endDate: String
+        let endDate: String?
     }
     
     let requestHash: String
