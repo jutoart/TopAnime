@@ -180,8 +180,8 @@ extension ApiServiceTests {
             requestHash: UUID().uuidString,
             top: [.init(rank: 1,
                         title: "Shingeki no Kyojin: The Final Season Part 2",
-                        url: URL(string: "https://myanimelist.net/anime/48583/Shingeki_no_Kyojin__The_Final_Season_Part_2"),
-                        imageUrl: URL(string: "https://cdn.myanimelist.net/images/anime/1988/119437.jpg?s=aad31fb4d3d6d893c32a52ae666698ac"),
+                        url: "https://myanimelist.net/anime/48583/Shingeki_no_Kyojin__The_Final_Season_Part_2",
+                        imageUrl: "https://cdn.myanimelist.net/images/anime/1988/119437.jpg?s=aad31fb4d3d6d893c32a52ae666698ac",
                         type: "TV",
                         startDate: "Jan 2022",
                         endDate: nil)]

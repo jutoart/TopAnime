@@ -12,10 +12,10 @@ struct AnimeRawModel: Codable {
     struct AnimeItem: Codable {
         let rank: Int
         let title: String
-        let url: URL?
-        let imageUrl: URL?
+        let url: String?
+        let imageUrl: String?
         let type: String
-        let startDate: String
+        let startDate: String?
         let endDate: String?
     }
     
