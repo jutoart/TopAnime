@@ -30,7 +30,19 @@ enum AnimeSubType: CaseIterable {
     case favorite
 }
 
+enum ApiServiceError: Error {
+    case configurationError
+    case apiError
+    case invalidData
+}
+
 class ApiService {
+    private let urlSession: URLSession
+    
+    init(urlSession: URLSession = .shared) {
+        self.urlSession = urlSession
+    }
+    
     func fetchTopAnime(type: AnimeType, subType: AnimeSubType) async throws -> AnimeRawModel {
         .init(requestHash: "", top: [])
     }
@@ -40,7 +52,8 @@ class ApiService {
 
 extension ApiService {
     enum SubTypeMap {
-        static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special, .bypopularity, .favorite]
-        static let Manga: [AnimeSubType] = [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua, .bypopularity, .favorite]
+        static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special]
+        static let Manga: [AnimeSubType] = [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua]
+        static let Both: [AnimeSubType] = [.bypopularity, .favorite]
     }
 }
