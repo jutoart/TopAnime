@@ -63,17 +63,17 @@ class AnimeViewModel: ObservableObject {
                 guard !isEndOFData else { return }
 
                 let nextPage = currentPage + 1
-                state = .loading(currentAnimeModels, nextPage)
-                let captureState = state
+                let captureState: State = .loading(currentAnimeModels, nextPage)
+                updateState(captureState)
 
                 do {
                     let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: nextPage)
                     guard captureState == state else { return }
-                    state = .normal(currentAnimeModels + animeModels, nextPage)
+                    updateState(.normal(currentAnimeModels + animeModels, nextPage))
                 } catch {
                     // cannot load more anymore
                     guard captureState == state else { return }
-                    state = .normal(currentAnimeModels, currentPage)
+                    updateState(.normal(currentAnimeModels, currentPage))
                     isEndOFData = true
                 }
             }
@@ -81,17 +81,23 @@ class AnimeViewModel: ObservableObject {
     }
 
     private func fetchDataFromStart() async {
-        state = .loading([], Constant.PageStart)
-        let captureState = state
+        let captureState: State = .loading([], Constant.PageStart)
+        updateState(captureState)
         isEndOFData = false
 
         do {
             let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: Constant.PageStart)
             guard captureState == state else { return }
-            state = .normal(animeModels, Constant.PageStart)
+            updateState(.normal(animeModels, Constant.PageStart))
         } catch {
             guard captureState == state else { return }
-            state = .error(error.localizedDescription)
+            updateState(.error(error.localizedDescription))
+        }
+    }
+
+    private func updateState(_ state: State) {
+        Task { @MainActor in
+            self.state = state
         }
     }
 }
