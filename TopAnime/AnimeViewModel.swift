@@ -15,11 +15,11 @@ class AnimeViewModel: ObservableObject {
         case normal([AnimeModel], Int)
         case error(String)
     }
-    
+
     enum RequestError: Error {
         case isFetchingData
     }
-    
+
     var type: AnimeType = .anime {
         didSet {
             Task {
@@ -27,7 +27,7 @@ class AnimeViewModel: ObservableObject {
             }
         }
     }
-    
+
     var subType: AnimeSubType = .airing {
         didSet {
             Task {
@@ -35,16 +35,16 @@ class AnimeViewModel: ObservableObject {
             }
         }
     }
-    
+
     @Published var state: State = .empty
-    
+
     private let service: ApiService
     private var isEndOFData = false
-    
+
     init(service: ApiService = .init()) {
         self.service = service
     }
-    
+
     func fetchData(fromStart: Bool = false) async throws {
         switch state {
         case .empty, .error:
@@ -61,11 +61,11 @@ class AnimeViewModel: ObservableObject {
             } else {
                 // load more case
                 guard !isEndOFData else { return }
-                
+
                 let nextPage = currentPage + 1
                 state = .loading(currentAnimeModels, nextPage)
                 let captureState = state
-                
+
                 do {
                     let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: nextPage)
                     guard captureState == state else { return }
@@ -79,12 +79,12 @@ class AnimeViewModel: ObservableObject {
             }
         }
     }
-    
+
     private func fetchDataFromStart() async {
         state = .loading([], Constant.PageStart)
         let captureState = state
         isEndOFData = false
-        
+
         do {
             let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: Constant.PageStart)
             guard captureState == state else { return }

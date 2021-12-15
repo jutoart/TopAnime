@@ -11,7 +11,7 @@ import Foundation
 enum AnimeType: String, CaseIterable {
     case anime
     case manga
-    
+
     var validSubTypes: [AnimeSubType] {
         switch self {
         case .anime:

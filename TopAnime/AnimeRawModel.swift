@@ -18,7 +18,7 @@ struct AnimeRawModel: Codable {
         let startDate: String?
         let endDate: String?
     }
-    
+
     let requestHash: String
     let top: [AnimeItem]
 }

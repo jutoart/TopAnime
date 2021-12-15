@@ -26,24 +26,24 @@ extension ApiServiceError: LocalizedError {
 
 class ApiService {
     private let serviceProvider: ApiServiceProvider
-    
+
     init(serviceProvider: ApiServiceProvider = URLSession.shared) {
         self.serviceProvider = serviceProvider
     }
-    
+
     func fetchTopAnime(type: AnimeType, subType: AnimeSubType, page: Int) async throws -> [AnimeModel] {
         // make sure sub type is valid
         guard type.validSubTypes.contains(subType) else {
             throw ApiServiceError.configurationError
         }
-        
+
         // generate URL
         let path = String(format: Constant.PathFormat, type.rawValue, page, subType.rawValue)
-        
+
         guard let url = URL(string: Constant.Host + path) else {
             throw ApiServiceError.configurationError
         }
-        
+
         // retrieve data
         let data: Data
         do {
@@ -51,7 +51,7 @@ class ApiService {
         } catch {
             throw ApiServiceError.apiError
         }
-        
+
         // decode data
         do {
             let animeRawModel = try Constant.JsonDecoder.decode(AnimeRawModel.self, from: data)
