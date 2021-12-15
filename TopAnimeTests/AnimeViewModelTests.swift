@@ -203,7 +203,7 @@ class AnimeViewModelTests: XCTestCase {
             XCTAssertEqual(animeModel.rank, testAnimeModel.rank)
             XCTAssertEqual(animeModel.title, testAnimeModel.title)
             XCTAssertEqual(animeModel.url, testAnimeModel.url)
-            XCTAssertEqual(animeModel.url, testAnimeModel.imageUrl)
+            XCTAssertEqual(animeModel.imageUrl, testAnimeModel.imageUrl)
             XCTAssertEqual(animeModel.type, testAnimeModel.type)
             XCTAssertEqual(animeModel.startDate, testAnimeModel.startDate)
             XCTAssertEqual(animeModel.endDate, testAnimeModel.endDate)

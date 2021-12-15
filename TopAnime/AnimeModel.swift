@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct AnimeModel: Codable {
+struct AnimeModel: Codable, Identifiable, Equatable {
+    private(set) var id = UUID().uuidString
     let rank: Int
     let title: String
     let url: URL?
@@ -16,6 +17,10 @@ struct AnimeModel: Codable {
     let type: String
     let startDate: String?
     let endDate: String?
+    
+    static func == (lhs: AnimeModel, rhs: AnimeModel) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 extension AnimeModel {
