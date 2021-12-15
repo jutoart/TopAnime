@@ -11,37 +11,47 @@ import SwiftUI
 struct ContentView: View {
     private let animeTypes = AnimeType.allCases
     private var animeSubTypes: [AnimeSubType] { selectedAnimeType.validSubTypes }
+
     @State private var selectedAnimeType: AnimeType = .anime
     @State private var selectedAnimeSubType: AnimeSubType = .airing
+    @StateObject private var viewModel = AnimeViewModel()
 
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 4) {
-                        ForEach(animeTypes, id: \.self) { animeType in
-                            AnimeTypeButton(isSelected: selectedAnimeType == animeType,
-                                            title: animeType.description,
-                                            color: Constant.Color.AnimeType) {
-                                selectedAnimeType = animeType
-                            }
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 4) {
+                    ForEach(animeTypes, id: \.self) { animeType in
+                        AnimeTypeButton(isSelected: selectedAnimeType == animeType,
+                                        title: animeType.description,
+                                        color: Constant.Color.AnimeType) {
+                            selectedAnimeType = animeType
+                            selectedAnimeSubType = animeSubTypes.first!
+                            viewModel.type = selectedAnimeType
+                            viewModel.subType = selectedAnimeSubType
                         }
                     }
-                    .padding(.horizontal)
                 }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 4) {
-                        ForEach(animeSubTypes, id: \.self) { animeSubType in
-                            AnimeTypeButton(isSelected: selectedAnimeSubType == animeSubType,
-                                            title: animeSubType.description,
-                                            color: Constant.Color.AnimeSubType) {
-                                selectedAnimeSubType = animeSubType
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                }
+                .padding(.horizontal)
             }
+            .frame(height: 44)
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 4) {
+                    ForEach(animeSubTypes, id: \.self) { animeSubType in
+                        AnimeTypeButton(isSelected: selectedAnimeSubType == animeSubType,
+                                        title: animeSubType.description,
+                                        color: Constant.Color.AnimeSubType) {
+                            selectedAnimeSubType = animeSubType
+                            viewModel.subType = selectedAnimeSubType
+                        }
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .frame(height: 44)
+            AnimeListView(state: $viewModel.state)
+        }
+        .task {
+            try? await viewModel.fetchData()
         }
     }
 }
