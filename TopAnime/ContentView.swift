@@ -48,6 +48,8 @@ struct ContentView: View {
                 .padding(.horizontal)
             }
             .frame(height: 44)
+            Spacer()
+                .frame(height: 16)
             AnimeListView(state: $viewModel.state)
         }
         .task {

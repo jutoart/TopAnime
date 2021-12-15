@@ -24,9 +24,9 @@ struct AnimeListView: View {
                 Spacer()
             } else {
                 ScrollView {
-                    LazyVStack(alignment: .leading) {
+                    LazyVStack(alignment: .leading, spacing: 16) {
                         ForEach(animeModels) { animeModel in
-                            Text(animeModel.title)
+                            AnimeView(animeModel: animeModel)
                         }
                     }
                     .padding(.horizontal)
@@ -34,9 +34,9 @@ struct AnimeListView: View {
             }
         case let .normal(animeModels, _):
             ScrollView {
-                LazyVStack(alignment: .leading) {
+                LazyVStack(alignment: .leading, spacing: 16) {
                     ForEach(animeModels) { animeModel in
-                        Text(animeModel.title)
+                        AnimeView(animeModel: animeModel)
                     }
                 }
                 .padding(.horizontal)

@@ -21,6 +21,7 @@
 		C6AF7CFB2768EEE90078ACB8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6AF7CFA2768EEE90078ACB8 /* Preview Assets.xcassets */; };
 		C6C48D0F276A3EC400EBC5C1 /* AnimeTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C48D0E276A3EC400EBC5C1 /* AnimeTypeButton.swift */; };
 		C6DAA57A276A5FB7006048B8 /* AnimeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DAA579276A5FB7006048B8 /* AnimeListView.swift */; };
+		C6DAA57C276A63D0006048B8 /* AnimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6DAA57B276A63D0006048B8 /* AnimeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		C6AF7D002768EEE90078ACB8 /* TopAnimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopAnimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6C48D0E276A3EC400EBC5C1 /* AnimeTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeTypeButton.swift; sourceTree = "<group>"; };
 		C6DAA579276A5FB7006048B8 /* AnimeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeListView.swift; sourceTree = "<group>"; };
+		C6DAA57B276A63D0006048B8 /* AnimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */,
 				C62E8D2B2769D45900EAF267 /* AnimeType.swift */,
 				C6C48D0E276A3EC400EBC5C1 /* AnimeTypeButton.swift */,
+				C6DAA57B276A63D0006048B8 /* AnimeView.swift */,
 				C62E8D2D2769D62200EAF267 /* AnimeViewModel.swift */,
 				C62E8D212768F4F500EAF267 /* ApiService.swift */,
 				C62E8D272768FE5D00EAF267 /* ApiServiceProvider.swift */,
@@ -229,6 +232,7 @@
 				C62E8D2C2769D45900EAF267 /* AnimeType.swift in Sources */,
 				C6AF7CF42768EEE10078ACB8 /* TopAnimeApp.swift in Sources */,
 				C62E8D222768F4F500EAF267 /* ApiService.swift in Sources */,
+				C6DAA57C276A63D0006048B8 /* AnimeView.swift in Sources */,
 				C62E8D282768FE5D00EAF267 /* ApiServiceProvider.swift in Sources */,
 				C6DAA57A276A5FB7006048B8 /* AnimeListView.swift in Sources */,
 				C6C48D0F276A3EC400EBC5C1 /* AnimeTypeButton.swift in Sources */,
