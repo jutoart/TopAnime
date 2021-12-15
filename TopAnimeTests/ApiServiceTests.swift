@@ -21,21 +21,14 @@ class ApiServiceTests: XCTestCase {
         urlSessionMock.response = .testRawModel
         
         do {
-            for subType in Constant.SubTypeMap.Anime {
+            for subType in AnimeType.anime.validSubTypes {
                 let animeModels = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
                 verifyAnimeModels(animeModels)
             }
             
-            for subType in Constant.SubTypeMap.Manga {
+            for subType in AnimeType.manga.validSubTypes {
                 let animeModels = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
                 verifyAnimeModels(animeModels)
-            }
-            
-            for subType in Constant.SubTypeMap.Both {
-                let animeModels = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
-                verifyAnimeModels(animeModels)
-                let mangaModels = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
-                verifyAnimeModels(mangaModels)
             }
         } catch {
             XCTFail("Should be no error in response")
@@ -45,7 +38,9 @@ class ApiServiceTests: XCTestCase {
     func testFetchTopAnimeConfigurationError() async throws {
         urlSessionMock.response = .testRawModel
         
-        for subType in Constant.SubTypeMap.Anime {
+        for subType in AnimeType.anime.validSubTypes {
+            guard !AnimeType.manga.validSubTypes.contains(subType) else { continue }
+            
             do {
                 _ = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
                 XCTFail("Should catch configuration error in this test")
@@ -59,7 +54,9 @@ class ApiServiceTests: XCTestCase {
             }
         }
         
-        for subType in Constant.SubTypeMap.Manga {
+        for subType in AnimeType.manga.validSubTypes {
+            guard !AnimeType.anime.validSubTypes.contains(subType) else { continue }
+            
             do {
                 _ = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
                 XCTFail("Should catch configuration error in this test")
@@ -202,11 +199,5 @@ extension ApiServiceTests {
             encoder.keyEncodingStrategy = .convertToSnakeCase
             return encoder
         }()
-        
-        enum SubTypeMap {
-            static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special]
-            static let Manga: [AnimeSubType] = [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua]
-            static let Both: [AnimeSubType] = [.bypopularity, .favorite]
-        }
     }
 }

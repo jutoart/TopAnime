@@ -12,6 +12,7 @@
 		C62E8D262768FB4800EAF267 /* ApiServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E8D252768FB4800EAF267 /* ApiServiceTests.swift */; };
 		C62E8D282768FE5D00EAF267 /* ApiServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E8D272768FE5D00EAF267 /* ApiServiceProvider.swift */; };
 		C62E8D2A2769D08800EAF267 /* AnimeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E8D292769D08800EAF267 /* AnimeModel.swift */; };
+		C62E8D2C2769D45900EAF267 /* AnimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C62E8D2B2769D45900EAF267 /* AnimeType.swift */; };
 		C6AF7CF42768EEE10078ACB8 /* TopAnimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */; };
 		C6AF7CF62768EEE10078ACB8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF7CF52768EEE10078ACB8 /* ContentView.swift */; };
 		C6AF7CF82768EEE90078ACB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6AF7CF72768EEE90078ACB8 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 		C62E8D252768FB4800EAF267 /* ApiServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiServiceTests.swift; sourceTree = "<group>"; };
 		C62E8D272768FE5D00EAF267 /* ApiServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiServiceProvider.swift; sourceTree = "<group>"; };
 		C62E8D292769D08800EAF267 /* AnimeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeModel.swift; sourceTree = "<group>"; };
+		C62E8D2B2769D45900EAF267 /* AnimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeType.swift; sourceTree = "<group>"; };
 		C6AF7CF02768EEE10078ACB8 /* TopAnime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopAnime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopAnimeApp.swift; sourceTree = "<group>"; };
 		C6AF7CF52768EEE10078ACB8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			children = (
 				C62E8D292769D08800EAF267 /* AnimeModel.swift */,
 				C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */,
+				C62E8D2B2769D45900EAF267 /* AnimeType.swift */,
 				C62E8D212768F4F500EAF267 /* ApiService.swift */,
 				C62E8D272768FE5D00EAF267 /* ApiServiceProvider.swift */,
 				C6AF7CF52768EEE10078ACB8 /* ContentView.swift */,
@@ -211,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6AF7CF62768EEE10078ACB8 /* ContentView.swift in Sources */,
+				C62E8D2C2769D45900EAF267 /* AnimeType.swift in Sources */,
 				C6AF7CF42768EEE10078ACB8 /* TopAnimeApp.swift in Sources */,
 				C62E8D222768F4F500EAF267 /* ApiService.swift in Sources */,
 				C62E8D282768FE5D00EAF267 /* ApiServiceProvider.swift in Sources */,

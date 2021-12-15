@@ -8,28 +8,6 @@
 
 import Foundation
 
-enum AnimeType: String, CaseIterable {
-    case anime
-    case manga
-}
-
-enum AnimeSubType: String, CaseIterable {
-    case airing
-    case upcoming
-    case tv
-    case movie
-    case ova
-    case special
-    case manga
-    case novels
-    case oneshots
-    case doujin
-    case manhwa
-    case manhua
-    case bypopularity
-    case favorite
-}
-
 enum ApiServiceError: Error {
     case configurationError
     case apiError
@@ -45,15 +23,8 @@ class ApiService {
     
     func fetchTopAnime(type: AnimeType, subType: AnimeSubType, page: Int) async throws -> [AnimeModel] {
         // make sure sub type is valid
-        switch type {
-        case .anime:
-            guard Constant.SubTypeMap.Anime.contains(subType) || Constant.SubTypeMap.Both.contains(subType) else {
-                throw ApiServiceError.configurationError
-            }
-        case .manga:
-            guard Constant.SubTypeMap.Manga.contains(subType) || Constant.SubTypeMap.Both.contains(subType) else {
-                throw ApiServiceError.configurationError
-            }
+        guard type.validSubTypes.contains(subType) else {
+            throw ApiServiceError.configurationError
         }
         
         // generate URL
@@ -93,11 +64,5 @@ extension ApiService {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             return decoder
         }()
-        
-        enum SubTypeMap {
-            static let Anime: [AnimeSubType] = [.airing, .upcoming, .tv, .movie, .ova, .special]
-            static let Manga: [AnimeSubType] = [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua]
-            static let Both: [AnimeSubType] = [.bypopularity, .favorite]
-        }
     }
 }
