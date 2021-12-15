@@ -17,40 +17,46 @@ struct ContentView: View {
     @StateObject private var viewModel = AnimeViewModel()
 
     var body: some View {
-        VStack {
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 4) {
-                    ForEach(animeTypes, id: \.self) { animeType in
-                        AnimeTypeButton(isSelected: selectedAnimeType == animeType,
-                                        title: animeType.description,
-                                        color: Constant.Color.AnimeType) {
-                            selectedAnimeType = animeType
-                            selectedAnimeSubType = animeSubTypes.first!
-                            viewModel.type = selectedAnimeType
-                            viewModel.subType = selectedAnimeSubType
-                        }
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .frame(height: 44)
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 4) {
-                    ForEach(animeSubTypes, id: \.self) { animeSubType in
-                        AnimeTypeButton(isSelected: selectedAnimeSubType == animeSubType,
-                                        title: animeSubType.description,
-                                        color: Constant.Color.AnimeSubType) {
-                            selectedAnimeSubType = animeSubType
-                            viewModel.subType = selectedAnimeSubType
-                        }
-                    }
-                }
-                .padding(.horizontal)
-            }
-            .frame(height: 44)
-            Spacer()
-                .frame(height: 16)
+        ZStack(alignment: .top) {
             AnimeListView(state: $viewModel.state)
+            VStack(spacing: 0) {
+                VStack {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 4) {
+                            ForEach(animeTypes, id: \.self) { animeType in
+                                AnimeTypeButton(isSelected: selectedAnimeType == animeType,
+                                                title: animeType.description,
+                                                color: Constant.Color.AnimeType) {
+                                    selectedAnimeType = animeType
+                                    selectedAnimeSubType = animeSubTypes.first!
+                                    viewModel.type = selectedAnimeType
+                                    viewModel.subType = selectedAnimeSubType
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    .frame(height: 48)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 4) {
+                            ForEach(animeSubTypes, id: \.self) { animeSubType in
+                                AnimeTypeButton(isSelected: selectedAnimeSubType == animeSubType,
+                                                title: animeSubType.description,
+                                                color: Constant.Color.AnimeSubType) {
+                                    selectedAnimeSubType = animeSubType
+                                    viewModel.subType = selectedAnimeSubType
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    .frame(height: 48)
+                    Spacer()
+                        .frame(height: 16)
+                }
+                .background(.regularMaterial)
+                Spacer()
+            }
         }
         .task {
             try? await viewModel.fetchData()

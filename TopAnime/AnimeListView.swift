@@ -15,13 +15,9 @@ struct AnimeListView: View {
         switch state {
         case .empty:
             Text("No data")
-                .padding()
-            Spacer()
         case let .loading(animeModels, _):
             if animeModels.isEmpty {
                 Text("Loading")
-                    .padding()
-                Spacer()
             } else {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 16) {
@@ -30,6 +26,7 @@ struct AnimeListView: View {
                         }
                     }
                     .padding(.horizontal)
+                    .padding(.top, 136)
                 }
             }
         case let .normal(animeModels, _):
@@ -40,10 +37,10 @@ struct AnimeListView: View {
                     }
                 }
                 .padding(.horizontal)
+                .padding(.top, 136)
             }
         case let .error(description):
             Text(description)
-                .padding()
         }
     }
 }
