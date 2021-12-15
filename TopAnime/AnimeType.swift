@@ -2,7 +2,7 @@
 //  AnimeType.swift
 //  TopAnime
 //
-//  Created by Curea Liu on 2021/12/15.
+//  Created by Art Huang on 2021/12/15.
 //  Copyright © 2021 Art Huang. All rights reserved.
 //
 

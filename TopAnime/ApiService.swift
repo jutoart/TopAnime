@@ -14,6 +14,16 @@ enum ApiServiceError: Error {
     case invalidData
 }
 
+extension ApiServiceError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .configurationError: return "Anime sub type is not matched with anime type"
+        case .apiError: return "Something wrong"
+        case .invalidData: return "Response data is invalid"
+        }
+    }
+}
+
 class ApiService {
     private let serviceProvider: ApiServiceProvider
     
