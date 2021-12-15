@@ -22,20 +22,20 @@ class ApiServiceTests: XCTestCase {
         
         do {
             for subType in Constant.SubTypeMap.Anime {
-                let animeRawModel = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
-                verifyAnimeRawModel(animeRawModel)
+                let animeModels = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
+                verifyAnimeModels(animeModels)
             }
             
             for subType in Constant.SubTypeMap.Manga {
-                let animeRawModel = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
-                verifyAnimeRawModel(animeRawModel)
+                let animeModels = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
+                verifyAnimeModels(animeModels)
             }
             
             for subType in Constant.SubTypeMap.Both {
-                let animeRawModel = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
-                verifyAnimeRawModel(animeRawModel)
-                let mangaRawModel = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
-                verifyAnimeRawModel(mangaRawModel)
+                let animeModels = try await sut.fetchTopAnime(type: .anime, subType: subType, page: 1)
+                verifyAnimeModels(animeModels)
+                let mangaModels = try await sut.fetchTopAnime(type: .manga, subType: subType, page: 1)
+                verifyAnimeModels(mangaModels)
             }
         } catch {
             XCTFail("Should be no error in response")
@@ -106,15 +106,25 @@ class ApiServiceTests: XCTestCase {
         }
     }
     
-    private func verifyAnimeRawModel(_ animeRawModel: AnimeRawModel) {
-        XCTAssertEqual(animeRawModel.requestHash, Constant.TestAnimeRawModel.requestHash)
-        XCTAssertEqual(animeRawModel.top.first?.rank, Constant.TestAnimeRawModel.top.first?.rank)
-        XCTAssertEqual(animeRawModel.top.first?.title, Constant.TestAnimeRawModel.top.first?.title)
-        XCTAssertEqual(animeRawModel.top.first?.url, Constant.TestAnimeRawModel.top.first?.url)
-        XCTAssertEqual(animeRawModel.top.first?.imageUrl, Constant.TestAnimeRawModel.top.first?.imageUrl)
-        XCTAssertEqual(animeRawModel.top.first?.type, Constant.TestAnimeRawModel.top.first?.type)
-        XCTAssertEqual(animeRawModel.top.first?.startDate, Constant.TestAnimeRawModel.top.first?.startDate)
-        XCTAssertEqual(animeRawModel.top.first?.endDate, Constant.TestAnimeRawModel.top.first?.endDate)
+    private func verifyAnimeModels(_ animeModels: [AnimeModel]) {
+        XCTAssertEqual(animeModels.count, 1) // only one test raw model
+        XCTAssertEqual(animeModels.first?.rank, Constant.TestAnimeRawModel.top.first?.rank)
+        XCTAssertEqual(animeModels.first?.title, Constant.TestAnimeRawModel.top.first?.title)
+        XCTAssertEqual(animeModels.first?.type, Constant.TestAnimeRawModel.top.first?.type)
+        XCTAssertEqual(animeModels.first?.startDate, Constant.TestAnimeRawModel.top.first?.startDate)
+        XCTAssertEqual(animeModels.first?.endDate, Constant.TestAnimeRawModel.top.first?.endDate)
+        
+        if let testUrl = Constant.TestAnimeRawModel.top.first?.url {
+            XCTAssertEqual(animeModels.first?.url, URL(string: testUrl))
+        } else {
+            XCTAssertNil(animeModels.first?.url)
+        }
+        
+        if let testImageUrl = Constant.TestAnimeRawModel.top.first?.imageUrl {
+            XCTAssertEqual(animeModels.first?.imageUrl, URL(string: testImageUrl))
+        } else {
+            XCTAssertNil(animeModels.first?.imageUrl)
+        }
     }
 }
 

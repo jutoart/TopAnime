@@ -43,7 +43,7 @@ class ApiService {
         self.serviceProvider = serviceProvider
     }
     
-    func fetchTopAnime(type: AnimeType, subType: AnimeSubType, page: Int) async throws -> AnimeRawModel {
+    func fetchTopAnime(type: AnimeType, subType: AnimeSubType, page: Int) async throws -> [AnimeModel] {
         // make sure sub type is valid
         switch type {
         case .anime:
@@ -73,7 +73,8 @@ class ApiService {
         
         // decode data
         do {
-            return try Constant.JsonDecoder.decode(AnimeRawModel.self, from: data)
+            let animeRawModel = try Constant.JsonDecoder.decode(AnimeRawModel.self, from: data)
+            return animeRawModel.top.map { AnimeModel(from: $0) }
         } catch let error {
             print(error)
             throw ApiServiceError.invalidData
