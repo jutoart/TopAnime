@@ -9,15 +9,15 @@
 import SwiftUI
 
 struct AnimeTypeButton: View {
+    var isSelected: Bool
     let title: String
     let color: Color
-    let action: (Bool) -> Void
-    @State var isSelected: Bool
+    let action: () -> Void
 
     var body: some View {
         Button(title) {
-            isSelected.toggle()
-            action(isSelected)
+            guard !isSelected else { return }
+            action()
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
@@ -28,14 +28,15 @@ struct AnimeTypeButton: View {
         .overlay {
             Capsule().stroke(color, lineWidth: isSelected ? 0 : 2)
         }
+        .padding(2)
     }
 }
 
 struct AnimeTypeButton_Previews: PreviewProvider {
     static var previews: some View {
-        AnimeTypeButton(title: "Button",
+        AnimeTypeButton(isSelected: false,
+                        title: "Button",
                         color: .blue,
-                        action: { _ in },
-                        isSelected: false)
+                        action: { })
     }
 }

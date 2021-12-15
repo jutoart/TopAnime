@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AnimeType: String, CaseIterable {
+enum AnimeType: String, CaseIterable, CustomStringConvertible {
     case anime
     case manga
 
@@ -20,9 +20,16 @@ enum AnimeType: String, CaseIterable {
             return [.manga, .novels, .oneshots, .doujin, .manhwa, .manhua, .bypopularity, .favorite]
         }
     }
+
+    var description: String {
+        switch self {
+        case .anime: return "Anime"
+        case .manga: return "Manga"
+        }
+    }
 }
 
-enum AnimeSubType: String, CaseIterable {
+enum AnimeSubType: String, CustomStringConvertible {
     case airing
     case upcoming
     case tv
@@ -37,4 +44,23 @@ enum AnimeSubType: String, CaseIterable {
     case manhua
     case bypopularity
     case favorite
+
+    var description: String {
+        switch self {
+        case .airing: return "Airing"
+        case .upcoming: return "Upcoming"
+        case .tv: return "TV"
+        case .movie: return "Movie"
+        case .ova: return "OVA"
+        case .special: return "Special"
+        case .manga: return "Manga"
+        case .novels: return "Novels"
+        case .oneshots: return "Oneshots"
+        case .doujin: return "Doujin"
+        case .manhwa: return "Manhwa"
+        case .manhua: return "Manhua"
+        case .bypopularity: return "ByPopularity"
+        case .favorite: return "Favorite"
+        }
+    }
 }
