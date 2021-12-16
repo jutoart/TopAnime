@@ -36,12 +36,14 @@ struct ContentView: View {
                                     AnimeTypeButton(isSelected: selectedAnimeType == animeType,
                                                     title: animeType.description,
                                                     color: Constant.Color.AnimeType) {
+                                        guard let animeSubType = animeType.validSubTypes.first else { return }
+
                                         selectedAnimeType = animeType
-                                        selectedAnimeSubType = animeSubTypes.first!
-                                        viewModel.type = selectedAnimeType
-                                        viewModel.subType = selectedAnimeSubType
+                                        selectedAnimeSubType = animeSubType
 
                                         Task(priority: .userInitiated) {
+                                            viewModel.type = animeType
+                                            viewModel.subType = animeSubType
                                             try? await viewModel.fetchData(fromStart: true)
                                         }
                                     }
@@ -67,9 +69,9 @@ struct ContentView: View {
                                                 title: animeSubType.description,
                                                 color: Constant.Color.AnimeSubType) {
                                     selectedAnimeSubType = animeSubType
-                                    viewModel.subType = selectedAnimeSubType
 
                                     Task(priority: .userInitiated) {
+                                        viewModel.subType = animeSubType
                                         try? await viewModel.fetchData(fromStart: true)
                                     }
                                 }
