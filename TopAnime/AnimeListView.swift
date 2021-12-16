@@ -14,10 +14,10 @@ struct AnimeListView: View {
     var body: some View {
         switch state {
         case .empty:
-            Text("No data")
+            InfoView(image: Constant.Image.Empty, message: Constant.Message.Empty)
         case let .loading(animeModels, _):
             if animeModels.isEmpty {
-                Text("Loading")
+                InfoView(image: nil, message: Constant.Message.Loading)
             } else {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 16) {
@@ -40,7 +40,7 @@ struct AnimeListView: View {
                 .padding(.top, 136)
             }
         case let .error(description):
-            Text(description)
+            InfoView(image: Constant.Image.Error, message: description)
         }
     }
 }
@@ -48,5 +48,21 @@ struct AnimeListView: View {
 struct AnimeListView_Previews: PreviewProvider {
     static var previews: some View {
         AnimeListView(state: .constant(.empty))
+    }
+}
+
+// MARK: - Constants
+
+extension AnimeListView {
+    private enum Constant {
+        enum Image {
+            static let Empty = SwiftUI.Image(systemName: "magnifyingglass")
+            static let Error = SwiftUI.Image(systemName: "exclamationmark.bubble")
+        }
+
+        enum Message {
+            static let Empty = "No Data"
+            static let Loading = "Loading..."
+        }
     }
 }
