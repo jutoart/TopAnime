@@ -241,6 +241,7 @@ extension AnimeViewModelTests {
 extension AnimeViewModelTests {
     private enum Constant {
         static let TestAnimeModels = [AnimeModel(
+            id: "48583",
             rank: 1,
             title: "Shingeki no Kyojin: The Final Season Part 2",
             url: URL(string: "https://myanimelist.net/anime/48583/Shingeki_no_Kyojin__The_Final_Season_Part_2"),

@@ -9,7 +9,7 @@
 import Foundation
 
 struct AnimeModel: Codable, Identifiable, Equatable {
-    private(set) var id = UUID().uuidString
+    let id: String
     let rank: Int
     let title: String
     let url: URL?
@@ -25,7 +25,8 @@ struct AnimeModel: Codable, Identifiable, Equatable {
 
 extension AnimeModel {
     init(from rawModel: AnimeRawModel.AnimeItem) {
-        self.init(rank: rawModel.rank,
+        self.init(id: "\(rawModel.malId)",
+                  rank: rawModel.rank,
                   title: rawModel.title,
                   url: rawModel.url == nil ? nil : URL(string: rawModel.url!),
                   imageUrl: rawModel.imageUrl == nil ? nil : URL(string: rawModel.imageUrl!),

@@ -10,6 +10,7 @@ import Foundation
 
 struct AnimeRawModel: Codable {
     struct AnimeItem: Codable {
+        let malId: Int
         let rank: Int
         let title: String
         let url: String?

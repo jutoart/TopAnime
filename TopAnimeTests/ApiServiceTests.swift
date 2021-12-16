@@ -185,7 +185,8 @@ extension ApiServiceTests {
     private enum Constant {
         static let TestAnimeRawModel = AnimeRawModel(
             requestHash: UUID().uuidString,
-            top: [.init(rank: 1,
+            top: [.init(malId: 48583,
+                        rank: 1,
                         title: "Shingeki no Kyojin: The Final Season Part 2",
                         url: "https://myanimelist.net/anime/48583/Shingeki_no_Kyojin__The_Final_Season_Part_2",
                         imageUrl: "https://cdn.myanimelist.net/images/anime/1988/119437.jpg?s=aad31fb4d3d6d893c32a52ae666698ac",
