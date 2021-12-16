@@ -9,8 +9,10 @@
 import SwiftUI
 
 struct AnimeListView: View {
-    @Binding var state: AnimeViewModel.State
-    let loadMoreAction: (() -> Void)?
+    let state: AnimeViewModel.State
+    let favorites: [String: AnimeModel]
+    let loadMoreAction: () -> Void
+    let favoriteAction: (AnimeModel, Bool) -> Void
 
     var body: some View {
         switch state {
@@ -23,12 +25,14 @@ struct AnimeListView: View {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 16) {
                         ForEach(animeModels) { animeModel in
-                            AnimeView(animeModel: animeModel)
+                            AnimeView(animeModel: animeModel,
+                                      isFavorite: favorites[animeModel.id] != nil,
+                                      favoriteAction: favoriteAction)
                         }
                         Spacer()
                             .frame(height: 16)
                             .onAppear {
-                                loadMoreAction?()
+                                loadMoreAction()
                             }
                     }
                     .padding(.horizontal)
@@ -43,7 +47,10 @@ struct AnimeListView: View {
 
 struct AnimeListView_Previews: PreviewProvider {
     static var previews: some View {
-        AnimeListView(state: .constant(.empty), loadMoreAction: nil)
+        AnimeListView(state: .empty,
+                      favorites: [:],
+                      loadMoreAction: { },
+                      favoriteAction: { (_, _) in })
     }
 }
 

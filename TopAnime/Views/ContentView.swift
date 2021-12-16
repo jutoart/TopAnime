@@ -15,13 +15,16 @@ struct ContentView: View {
     @State private var selectedAnimeType: AnimeType = .anime
     @State private var selectedAnimeSubType: AnimeSubType = .airing
     @StateObject private var viewModel = AnimeViewModel()
+    @StateObject private var persistenceViewModel = PersistenceViewModel()
 
     var body: some View {
         ZStack(alignment: .top) {
-            AnimeListView(state: $viewModel.state) {
+            AnimeListView(state: viewModel.state, favorites: persistenceViewModel.favorites) {
                 Task(priority: .userInitiated) {
                     try? await viewModel.fetchData()
                 }
+            } favoriteAction: { (animeModel, isFavorite) in
+                persistenceViewModel.setAnimeModel(animeModel, isFavorite: isFavorite)
             }
             VStack(spacing: 0) {
                 VStack {

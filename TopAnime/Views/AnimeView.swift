@@ -10,7 +10,9 @@ import SwiftUI
 
 struct AnimeView: View {
     let animeModel: AnimeModel
+    @State var isFavorite: Bool
     @State private var isSafariViewPresented = false
+    let favoriteAction: (AnimeModel, Bool) -> Void
 
     var period: String {
         switch (animeModel.startDate, animeModel.endDate) {
@@ -45,6 +47,18 @@ struct AnimeView: View {
                     .font(.footnote)
             }
             .padding(.vertical, 8)
+            Spacer()
+            Button {
+                isFavorite.toggle()
+                favoriteAction(animeModel, isFavorite)
+            } label: {
+                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                    .resizable()
+                    .scaledToFit()
+            }
+            .accentColor(.red)
+            .frame(width: 24, height: 24)
+            .padding(.vertical, 8)
         }
         .onTapGesture {
             guard animeModel.url != nil else { return }
@@ -64,6 +78,8 @@ struct AnimeView_Previews: PreviewProvider {
                                     imageUrl: URL(string: "https://cdn.myanimelist.net/images/anime/1988/119437.jpg?s=aad31fb4d3d6d893c32a52ae666698ac"),
                                     type: "TV",
                                     startDate: "Jan 2022",
-                                    endDate: nil))
+                                    endDate: nil),
+                  isFavorite: false,
+                  favoriteAction: { (_, _) in })
     }
 }
