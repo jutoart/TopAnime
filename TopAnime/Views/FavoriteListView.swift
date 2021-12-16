@@ -40,7 +40,6 @@ struct FavoriteListView: View {
                         .scaledToFit()
                         .frame(width: 24, height: 24)
                 }
-                .accentColor(.primary)
                 Spacer()
             }
             .padding()

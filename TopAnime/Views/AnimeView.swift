@@ -59,7 +59,7 @@ struct AnimeView: View {
                     .resizable()
                     .scaledToFit()
             }
-            .accentColor(.red)
+            .tint(.red)
             .frame(width: 24, height: 24)
             .padding(.vertical, 8)
         }

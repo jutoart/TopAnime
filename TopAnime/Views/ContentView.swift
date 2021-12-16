@@ -53,7 +53,6 @@ struct ContentView: View {
                                 .scaledToFit()
                                 .frame(width: 24, height: 24)
                         }
-                        .accentColor(.red)
                         .padding(.horizontal)
                     }
                     .frame(height: 48)
