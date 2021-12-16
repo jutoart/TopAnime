@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AnimeView: View {
     let animeModel: AnimeModel
+    let isRankHidden: Bool
     @State var isFavorite: Bool
     @State private var isSafariViewPresented = false
     let favoriteAction: (AnimeModel, Bool) -> Void
@@ -24,12 +25,14 @@ struct AnimeView: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            Text("\(animeModel.rank)")
-                .font(.title)
-                .lineLimit(1)
-                .minimumScaleFactor(0.33)
-                .padding(.vertical, 8)
-                .frame(width: 20)
+            if !isRankHidden {
+                Text("\(animeModel.rank)")
+                    .font(.title)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.33)
+                    .padding(.vertical, 8)
+                    .frame(width: 20)
+            }
             AsyncImage(url: animeModel.imageUrl) { image in
                 image
                     .resizable()
@@ -80,6 +83,7 @@ struct AnimeView_Previews: PreviewProvider {
                                     type: "TV",
                                     startDate: "Jan 2022",
                                     endDate: nil),
+                  isRankHidden: false,
                   isFavorite: false,
                   favoriteAction: { (_, _) in })
     }

@@ -26,6 +26,7 @@ struct AnimeListView: View {
                     LazyVStack(alignment: .leading, spacing: 16) {
                         ForEach(animeModels) { animeModel in
                             AnimeView(animeModel: animeModel,
+                                      isRankHidden: false,
                                       isFavorite: favorites[animeModel.id] != nil,
                                       favoriteAction: favoriteAction)
                         }

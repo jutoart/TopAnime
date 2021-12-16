@@ -19,6 +19,7 @@
 		C6A0475C276ADA0E004CDD8F /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A0475B276ADA0E004CDD8F /* SafariView.swift */; };
 		C6A0475E276B0A32004CDD8F /* PersistenceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A0475D276B0A31004CDD8F /* PersistenceViewModel.swift */; };
 		C6A04760276B0AAD004CDD8F /* PersistenceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A0475F276B0AAB004CDD8F /* PersistenceViewModelTests.swift */; };
+		C6A04762276B1BAB004CDD8F /* FavoriteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A04761276B1BAA004CDD8F /* FavoriteListView.swift */; };
 		C6AF7CF42768EEE10078ACB8 /* TopAnimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */; };
 		C6AF7CF62768EEE10078ACB8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AF7CF52768EEE10078ACB8 /* ContentView.swift */; };
 		C6AF7CF82768EEE90078ACB8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C6AF7CF72768EEE90078ACB8 /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 		C6A0475B276ADA0E004CDD8F /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 		C6A0475D276B0A31004CDD8F /* PersistenceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewModel.swift; sourceTree = "<group>"; };
 		C6A0475F276B0AAB004CDD8F /* PersistenceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewModelTests.swift; sourceTree = "<group>"; };
+		C6A04761276B1BAA004CDD8F /* FavoriteListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteListView.swift; sourceTree = "<group>"; };
 		C6AF7CF02768EEE10078ACB8 /* TopAnime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopAnime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopAnimeApp.swift; sourceTree = "<group>"; };
 		C6AF7CF52768EEE10078ACB8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				C6C48D0E276A3EC400EBC5C1 /* AnimeTypeButton.swift */,
 				C6DAA57B276A63D0006048B8 /* AnimeView.swift */,
 				C6AF7CF52768EEE10078ACB8 /* ContentView.swift */,
+				C6A04761276B1BAA004CDD8F /* FavoriteListView.swift */,
 				C6A04755276AC9DD004CDD8F /* InfoView.swift */,
 				C6A0475B276ADA0E004CDD8F /* SafariView.swift */,
 			);
@@ -283,6 +286,7 @@
 				C6DAA57A276A5FB7006048B8 /* AnimeListView.swift in Sources */,
 				C6C48D0F276A3EC400EBC5C1 /* AnimeTypeButton.swift in Sources */,
 				C62E8D2E2769D62200EAF267 /* AnimeViewModel.swift in Sources */,
+				C6A04762276B1BAB004CDD8F /* FavoriteListView.swift in Sources */,
 				C62E8D2A2769D08800EAF267 /* AnimeModel.swift in Sources */,
 				C6A0475E276B0A32004CDD8F /* PersistenceViewModel.swift in Sources */,
 				C62E8D242768F7AE00EAF267 /* AnimeRawModel.swift in Sources */,

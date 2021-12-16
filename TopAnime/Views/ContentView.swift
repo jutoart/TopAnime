@@ -14,6 +14,7 @@ struct ContentView: View {
 
     @State private var selectedAnimeType: AnimeType = .anime
     @State private var selectedAnimeSubType: AnimeSubType = .airing
+    @State private var isFavoriteListViewPresented = false
     @StateObject private var viewModel = AnimeViewModel()
     @StateObject private var persistenceViewModel = PersistenceViewModel()
 
@@ -28,19 +29,31 @@ struct ContentView: View {
             }
             VStack(spacing: 0) {
                 VStack {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack(spacing: 4) {
-                            ForEach(animeTypes, id: \.self) { animeType in
-                                AnimeTypeButton(isSelected: selectedAnimeType == animeType,
-                                                title: animeType.description,
-                                                color: Constant.Color.AnimeType) {
-                                    selectedAnimeType = animeType
-                                    selectedAnimeSubType = animeSubTypes.first!
-                                    viewModel.type = selectedAnimeType
-                                    viewModel.subType = selectedAnimeSubType
+                    HStack {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            LazyHStack(spacing: 4) {
+                                ForEach(animeTypes, id: \.self) { animeType in
+                                    AnimeTypeButton(isSelected: selectedAnimeType == animeType,
+                                                    title: animeType.description,
+                                                    color: Constant.Color.AnimeType) {
+                                        selectedAnimeType = animeType
+                                        selectedAnimeSubType = animeSubTypes.first!
+                                        viewModel.type = selectedAnimeType
+                                        viewModel.subType = selectedAnimeSubType
+                                    }
                                 }
                             }
+                            .padding(.horizontal)
                         }
+                        Button {
+                            isFavoriteListViewPresented.toggle()
+                        } label: {
+                            Image(systemName: "list.star")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                        }
+                        .accentColor(.red)
                         .padding(.horizontal)
                     }
                     .frame(height: 48)
@@ -67,6 +80,9 @@ struct ContentView: View {
         }
         .task {
             try? await viewModel.fetchData()
+        }
+        .sheet(isPresented: $isFavoriteListViewPresented) {
+            FavoriteListView(persistenceViewModel: persistenceViewModel)
         }
     }
 }
