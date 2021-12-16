@@ -74,6 +74,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C6A04757276AD960004CDD8F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C6DAA579276A5FB7006048B8 /* AnimeListView.swift */,
+				C6C48D0E276A3EC400EBC5C1 /* AnimeTypeButton.swift */,
+				C6DAA57B276A63D0006048B8 /* AnimeView.swift */,
+				C6AF7CF52768EEE10078ACB8 /* ContentView.swift */,
+				C6A04755276AC9DD004CDD8F /* InfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C6A04758276AD96A004CDD8F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C62E8D292769D08800EAF267 /* AnimeModel.swift */,
+				C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */,
+				C62E8D2B2769D45900EAF267 /* AnimeType.swift */,
+				C62E8D2D2769D62200EAF267 /* AnimeViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C6A04759276AD977004CDD8F /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				C6AF7CF72768EEE90078ACB8 /* Assets.xcassets */,
+				C6AF7CF92768EEE90078ACB8 /* Preview Content */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		C6A0475A276AD986004CDD8F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C62E8D212768F4F500EAF267 /* ApiService.swift */,
+				C62E8D272768FE5D00EAF267 /* ApiServiceProvider.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		C6AF7CE72768EEE10078ACB8 = {
 			isa = PBXGroup;
 			children = (
@@ -95,20 +136,11 @@
 		C6AF7CF22768EEE10078ACB8 /* TopAnime */ = {
 			isa = PBXGroup;
 			children = (
-				C6DAA579276A5FB7006048B8 /* AnimeListView.swift */,
-				C62E8D292769D08800EAF267 /* AnimeModel.swift */,
-				C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */,
-				C62E8D2B2769D45900EAF267 /* AnimeType.swift */,
-				C6C48D0E276A3EC400EBC5C1 /* AnimeTypeButton.swift */,
-				C6DAA57B276A63D0006048B8 /* AnimeView.swift */,
-				C62E8D2D2769D62200EAF267 /* AnimeViewModel.swift */,
-				C62E8D212768F4F500EAF267 /* ApiService.swift */,
-				C62E8D272768FE5D00EAF267 /* ApiServiceProvider.swift */,
-				C6AF7CF52768EEE10078ACB8 /* ContentView.swift */,
-				C6A04755276AC9DD004CDD8F /* InfoView.swift */,
 				C6AF7CF32768EEE10078ACB8 /* TopAnimeApp.swift */,
-				C6AF7CF72768EEE90078ACB8 /* Assets.xcassets */,
-				C6AF7CF92768EEE90078ACB8 /* Preview Content */,
+				C6A04758276AD96A004CDD8F /* Models */,
+				C6A0475A276AD986004CDD8F /* Services */,
+				C6A04759276AD977004CDD8F /* SupportingFiles */,
+				C6A04757276AD960004CDD8F /* Views */,
 			);
 			path = TopAnime;
 			sourceTree = "<group>";
