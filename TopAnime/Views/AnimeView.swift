@@ -11,7 +11,7 @@ import SwiftUI
 struct AnimeView: View {
     let animeModel: AnimeModel
     let isRankHidden: Bool
-    @State var isFavorite: Bool
+    let isFavorite: Bool
     @State private var isSafariViewPresented = false
     let favoriteAction: (AnimeModel, Bool) -> Void
 
@@ -52,8 +52,7 @@ struct AnimeView: View {
             .padding(.vertical, 8)
             Spacer()
             Button {
-                isFavorite.toggle()
-                favoriteAction(animeModel, isFavorite)
+                favoriteAction(animeModel, !isFavorite)
             } label: {
                 Image(systemName: isFavorite ? "heart.fill" : "heart")
                     .resizable()
