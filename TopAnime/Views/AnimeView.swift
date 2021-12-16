@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AnimeView: View {
     let animeModel: AnimeModel
+    @State private var isSafariViewPresented = false
 
     var period: String {
         switch (animeModel.startDate, animeModel.endDate) {
@@ -44,6 +45,13 @@ struct AnimeView: View {
                     .font(.footnote)
             }
             .padding(.vertical, 8)
+        }
+        .onTapGesture {
+            guard animeModel.url != nil else { return }
+            isSafariViewPresented.toggle()
+        }
+        .sheet(isPresented: $isSafariViewPresented) {
+            SafariView(url: animeModel.url!)
         }
     }
 }
