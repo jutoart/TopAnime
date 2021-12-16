@@ -10,13 +10,14 @@ import SwiftUI
 
 struct AnimeListView: View {
     @Binding var state: AnimeViewModel.State
+    let loadMoreAction: (() -> Void)?
 
     var body: some View {
         switch state {
         case .empty:
             InfoView(image: Constant.Image.Empty, message: Constant.Message.Empty)
-        case let .loading(animeModels, _):
-            if animeModels.isEmpty {
+        case let .loading(animeModels, _), let .normal(animeModels, _):
+            if case .loading = state, animeModels.isEmpty {
                 InfoView(image: nil, message: Constant.Message.Loading)
             } else {
                 ScrollView {
@@ -24,20 +25,15 @@ struct AnimeListView: View {
                         ForEach(animeModels) { animeModel in
                             AnimeView(animeModel: animeModel)
                         }
+                        Spacer()
+                            .frame(height: 16)
+                            .onAppear {
+                                loadMoreAction?()
+                            }
                     }
                     .padding(.horizontal)
                     .padding(.top, 136)
                 }
-            }
-        case let .normal(animeModels, _):
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(animeModels) { animeModel in
-                        AnimeView(animeModel: animeModel)
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.top, 136)
             }
         case let .error(description):
             InfoView(image: Constant.Image.Error, message: description)
@@ -47,7 +43,7 @@ struct AnimeListView: View {
 
 struct AnimeListView_Previews: PreviewProvider {
     static var previews: some View {
-        AnimeListView(state: .constant(.empty))
+        AnimeListView(state: .constant(.empty), loadMoreAction: nil)
     }
 }
 

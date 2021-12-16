@@ -18,7 +18,11 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            AnimeListView(state: $viewModel.state)
+            AnimeListView(state: $viewModel.state) {
+                Task(priority: .userInitiated) {
+                    try? await viewModel.fetchData()
+                }
+            }
             VStack(spacing: 0) {
                 VStack {
                     ScrollView(.horizontal, showsIndicators: false) {
