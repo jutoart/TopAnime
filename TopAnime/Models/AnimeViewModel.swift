@@ -20,29 +20,21 @@ class AnimeViewModel: ObservableObject {
         case isFetchingData
     }
 
-    var type: AnimeType = .anime {
-        didSet {
-            Task {
-                try? await fetchData(fromStart: true)
-            }
-        }
-    }
+    var type: AnimeType = .anime
+    var subType: AnimeSubType = .airing
 
-    var subType: AnimeSubType = .airing {
-        didSet {
-            Task {
-                try? await fetchData(fromStart: true)
-            }
-        }
-    }
-
-    @Published var state: State = .empty
+    @Published private(set) var state: State = .empty
 
     private let service: ApiService
+    private var fetchId: String?
     private var isEndOFData = false
 
     init(service: ApiService = .init()) {
         self.service = service
+    }
+
+    @MainActor func updateState(_ state: State) {
+        self.state = state
     }
 
     func fetchData(fromStart: Bool = false) async throws {
@@ -63,17 +55,19 @@ class AnimeViewModel: ObservableObject {
                 guard !isEndOFData else { return }
 
                 let nextPage = currentPage + 1
-                let captureState: State = .loading(currentAnimeModels, nextPage)
-                updateState(captureState)
+                await updateState(.loading(currentAnimeModels, nextPage))
+
+                let currentFetchId = UUID().uuidString
+                fetchId = currentFetchId
 
                 do {
                     let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: nextPage)
-                    guard captureState == state else { return }
-                    updateState(.normal(currentAnimeModels + animeModels, nextPage))
+                    guard currentFetchId == fetchId else { return }
+                    await updateState(.normal(currentAnimeModels + animeModels, nextPage))
                 } catch {
                     // cannot load more anymore
-                    guard captureState == state else { return }
-                    updateState(.normal(currentAnimeModels, currentPage))
+                    guard currentFetchId == fetchId else { return }
+                    await updateState(.normal(currentAnimeModels, currentPage))
                     isEndOFData = true
                 }
             }
@@ -81,23 +75,19 @@ class AnimeViewModel: ObservableObject {
     }
 
     private func fetchDataFromStart() async {
-        let captureState: State = .loading([], Constant.PageStart)
-        updateState(captureState)
+        await updateState(.loading([], Constant.PageStart))
+
+        let currentFetchId = UUID().uuidString
+        fetchId = currentFetchId
         isEndOFData = false
 
         do {
             let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: Constant.PageStart)
-            guard captureState == state else { return }
-            updateState(.normal(animeModels, Constant.PageStart))
+            guard currentFetchId == fetchId else { return }
+            await updateState(.normal(animeModels, Constant.PageStart))
         } catch {
-            guard captureState == state else { return }
-            updateState(.error(error.localizedDescription))
-        }
-    }
-
-    private func updateState(_ state: State) {
-        Task { @MainActor in
-            self.state = state
+            guard currentFetchId == fetchId else { return }
+            await updateState(.error(error.localizedDescription))
         }
     }
 }

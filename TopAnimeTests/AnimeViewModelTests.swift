@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Combine
 @testable import TopAnime
 
 class AnimeViewModelTests: XCTestCase {
@@ -15,14 +16,24 @@ class AnimeViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         apiServiceMock.result = nil
-        sut.state = .empty
     }
 
-    func testFetchData() async {
+    func testFetchDataStateEmpty() async {
         apiServiceMock.result = .success(Constant.TestAnimeModels)
+        await sut.updateState(.empty)
 
-        // current state empty
-        sut.state = .empty
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { [unowned self] (state) in
+            switch state {
+            case let .normal(animeModels, page):
+                XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
+                self.verifyAnimeModels(animeModels)
+                XCTAssertEqual(page, 1)
+                expectation.fulfill()
+            case .empty, .loading, .error:
+                break // no-op
+            }
+        }
 
         do {
             try await sut.fetchData()
@@ -30,17 +41,14 @@ class AnimeViewModelTests: XCTestCase {
             XCTFail("Should be no error for the request")
         }
 
-        switch sut.state {
-        case let .normal(animeModels, page):
-            XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
-            verifyAnimeModels(animeModels)
-            XCTAssertEqual(page, 1)
-        case .empty, .loading, .error:
-            XCTFail("Invalid state after fetch data")
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
         }
+    }
 
-        // current state loading
-        sut.state = .loading([], 1)
+    func testFetchDataStateLoading() async {
+        apiServiceMock.result = .success(Constant.TestAnimeModels)
+        await sut.updateState(.loading([], 1))
 
         do {
             try await sut.fetchData()
@@ -59,34 +67,33 @@ class AnimeViewModelTests: XCTestCase {
             XCTAssertEqual(animeModels.count, .zero)
             XCTAssertEqual(page, 1)
         case .empty, .normal, .error:
-            XCTFail("Invalid state after fetch data")
+            break // no-op
         }
+    }
 
-        // current state normal, load more case
-        sut.state = .normal(Constant.TestAnimeModels, 1)
+    func testFetchDataStateNormal() async {
+        // load more case
+        apiServiceMock.result = .success(Constant.TestAnimeModels)
+        await sut.updateState(.normal(Constant.TestAnimeModels, 1))
 
-        do {
-            try await sut.fetchData()
-        } catch {
-            XCTFail("Should be no error for the request")
-        }
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { [unowned self] (state) in
+            switch state {
+            case let .normal(animeModels, page):
+                XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count * 2)
+                XCTAssertEqual(page, 2)
 
-        switch sut.state {
-        case let .normal(animeModels, page):
-            XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count * 2)
-            XCTAssertEqual(page, 2)
+                if animeModels.count == Constant.TestAnimeModels.count * 2 {
+                    self.verifyAnimeModels(Array(animeModels[0..<Constant.TestAnimeModels.count]))
+                    self.verifyAnimeModels(Array(animeModels[Constant.TestAnimeModels.count..<Constant.TestAnimeModels.count * 2]))
 
-            if animeModels.count == Constant.TestAnimeModels.count * 2 {
-                verifyAnimeModels(Array(animeModels[0..<Constant.TestAnimeModels.count]))
-                verifyAnimeModels(Array(animeModels[Constant.TestAnimeModels.count..<Constant.TestAnimeModels.count * 2]))
+                }
 
+                expectation.fulfill()
+            case .empty, .loading, .error:
+                break // no-op
             }
-        case .empty, .loading, .error:
-            XCTFail("Invalid state after fetch data")
         }
-
-        // current state error, should be the same with empty
-        sut.state = .error("TEST")
 
         do {
             try await sut.fetchData()
@@ -94,13 +101,37 @@ class AnimeViewModelTests: XCTestCase {
             XCTFail("Should be no error for the request")
         }
 
-        switch sut.state {
-        case let .normal(animeModels, page):
-            XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
-            verifyAnimeModels(animeModels)
-            XCTAssertEqual(page, 1)
-        case .empty, .loading, .error:
-            XCTFail("Invalid state after fetch data")
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
+        }
+    }
+
+    func testFetchDataStateError() async {
+        // result should be the same with the empty case
+        apiServiceMock.result = .success(Constant.TestAnimeModels)
+        await sut.updateState(.error(Constant.TestErrorDescription))
+
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { [unowned self] (state) in
+            switch state {
+            case let .normal(animeModels, page):
+                XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
+                self.verifyAnimeModels(animeModels)
+                XCTAssertEqual(page, 1)
+                expectation.fulfill()
+            case .empty, .loading, .error:
+                break // no-op
+            }
+        }
+
+        do {
+            try await sut.fetchData()
+        } catch {
+            XCTFail("Should be no error for the request")
+        }
+
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
         }
     }
 
@@ -108,8 +139,21 @@ class AnimeViewModelTests: XCTestCase {
         apiServiceMock.result = .success(Constant.TestAnimeModels)
 
         // no matter what current state is, fetch data from start will have the same next state if fetch successfully
-        for state in [AnimeViewModel.State.empty, .loading([], 1), .normal(Constant.TestAnimeModels, 1), .error("TEST")] {
-            sut.state = state
+        for state in [AnimeViewModel.State.empty, .loading([], 1), .normal(Constant.TestAnimeModels, 1), .error(Constant.TestErrorDescription)] {
+            await sut.updateState(state)
+
+            let expectation = expectation(description: "testFetchDataStateEmpty")
+            let cancellabe = sut.$state.dropFirst().sink { [unowned self] (state) in
+                switch state {
+                case let .normal(animeModels, page):
+                    XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
+                    self.verifyAnimeModels(animeModels)
+                    XCTAssertEqual(page, 1)
+                    expectation.fulfill()
+                case .empty, .loading, .error:
+                    break // no-op
+                }
+            }
 
             do {
                 try await sut.fetchData(fromStart: true)
@@ -117,22 +161,26 @@ class AnimeViewModelTests: XCTestCase {
                 XCTFail("Should be no error for the request")
             }
 
-            switch sut.state {
-            case let .normal(animeModels, page):
-                XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
-                verifyAnimeModels(animeModels)
-                XCTAssertEqual(page, 1)
-            case .empty, .loading, .error:
-                XCTFail("Invalid state after fetch data")
+            await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+                cancellabe.cancel()
             }
         }
     }
 
-    func testFetchDataError() async {
+    func testFetchDataErrorStateEmpty() async {
         apiServiceMock.result = .failure(.apiError)
+        await sut.updateState(.empty)
 
-        // current state empty
-        sut.state = .empty
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { state in
+            switch state {
+            case let .error(errorDescription):
+                XCTAssertEqual(errorDescription, ApiServiceError.apiError.localizedDescription)
+                expectation.fulfill()
+            case .empty, .loading, .normal:
+                break // no-op
+            }
+        }
 
         do {
             try await sut.fetchData()
@@ -140,15 +188,28 @@ class AnimeViewModelTests: XCTestCase {
             XCTFail("Should be no error for the request")
         }
 
-        switch sut.state {
-        case let .error(errorDescription):
-            XCTAssertEqual(errorDescription, ApiServiceError.apiError.localizedDescription)
-        case .empty, .loading, .normal:
-            XCTFail("Invalid state after fetch data")
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
         }
+    }
 
-        // current state normal, load more case
-        sut.state = .normal(Constant.TestAnimeModels, 1)
+    func testFetchDataErrorStateNormal() async {
+        // load more case
+        apiServiceMock.result = .failure(.apiError)
+        await sut.updateState(.normal(Constant.TestAnimeModels, 1))
+
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { [unowned self] (state) in
+            switch state {
+            case let .normal(animeModels, page):
+                XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
+                self.verifyAnimeModels(animeModels)
+                XCTAssertEqual(page, 1)
+                expectation.fulfill()
+            case .empty, .loading, .error:
+                break // no-op
+            }
+        }
 
         do {
             try await sut.fetchData()
@@ -156,17 +217,26 @@ class AnimeViewModelTests: XCTestCase {
             XCTFail("Should be no error for the request")
         }
 
-        switch sut.state {
-        case let .normal(animeModels, page):
-            XCTAssertEqual(animeModels.count, Constant.TestAnimeModels.count)
-            verifyAnimeModels(animeModels)
-            XCTAssertEqual(page, 1)
-        case .empty, .loading, .error:
-            XCTFail("Invalid state after fetch data")
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
         }
+    }
 
-        // current state normal, not load more case
-        sut.state = .normal(Constant.TestAnimeModels, 1)
+    func testFetchDataFromStartErrorStateNormal() async {
+        // not load more case
+        apiServiceMock.result = .failure(.apiError)
+        await sut.updateState(.normal(Constant.TestAnimeModels, 1))
+
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { state in
+            switch state {
+            case let .error(errorDescription):
+                XCTAssertEqual(errorDescription, ApiServiceError.apiError.localizedDescription)
+                expectation.fulfill()
+            case .empty, .loading, .normal:
+                break // no-op
+            }
+        }
 
         do {
             try await sut.fetchData(fromStart: true)
@@ -174,15 +244,25 @@ class AnimeViewModelTests: XCTestCase {
             XCTFail("Should be no error for the request")
         }
 
-        switch sut.state {
-        case let .error(errorDescription):
-            XCTAssertEqual(errorDescription, ApiServiceError.apiError.localizedDescription)
-        case .empty, .loading, .normal:
-            XCTFail("Invalid state after fetch data")
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
         }
+    }
 
-        // current state empty
-        sut.state = .error("TEST")
+    func testFetchDataErrorStateError() async {
+        apiServiceMock.result = .failure(.apiError)
+        await sut.updateState(.error(Constant.TestErrorDescription))
+
+        let expectation = expectation(description: "testFetchDataStateEmpty")
+        let cancellabe = sut.$state.dropFirst().sink { state in
+            switch state {
+            case let .error(errorDescription):
+                XCTAssertEqual(errorDescription, ApiServiceError.apiError.localizedDescription)
+                expectation.fulfill()
+            case .empty, .loading, .normal:
+                break // no-op
+            }
+        }
 
         do {
             try await sut.fetchData()
@@ -190,11 +270,8 @@ class AnimeViewModelTests: XCTestCase {
             XCTFail("Should be no error for the request")
         }
 
-        switch sut.state {
-        case let .error(errorDescription):
-            XCTAssertEqual(errorDescription, ApiServiceError.apiError.localizedDescription)
-        case .empty, .loading, .normal:
-            XCTFail("Invalid state after fetch data")
+        await waitForExpectations(timeout: Constant.ExpectionTimeout) { _ in
+            cancellabe.cancel()
         }
     }
 
@@ -240,6 +317,8 @@ extension AnimeViewModelTests {
 
 extension AnimeViewModelTests {
     private enum Constant {
+        static let ExpectionTimeout: TimeInterval = 3
+        static let TestErrorDescription = UUID().uuidString
         static let TestAnimeModels = [AnimeModel(
             id: "48583",
             rank: 1,

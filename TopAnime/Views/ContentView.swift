@@ -40,6 +40,10 @@ struct ContentView: View {
                                         selectedAnimeSubType = animeSubTypes.first!
                                         viewModel.type = selectedAnimeType
                                         viewModel.subType = selectedAnimeSubType
+
+                                        Task(priority: .userInitiated) {
+                                            try? await viewModel.fetchData(fromStart: true)
+                                        }
                                     }
                                 }
                             }
@@ -64,6 +68,10 @@ struct ContentView: View {
                                                 color: Constant.Color.AnimeSubType) {
                                     selectedAnimeSubType = animeSubType
                                     viewModel.subType = selectedAnimeSubType
+
+                                    Task(priority: .userInitiated) {
+                                        try? await viewModel.fetchData(fromStart: true)
+                                    }
                                 }
                             }
                         }
