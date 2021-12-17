@@ -23,7 +23,7 @@ class AnimeViewModel: ObservableObject {
     var type: AnimeType = .anime
     var subType: AnimeSubType = .airing
 
-    @Published private(set) var state: State = .empty
+    @MainActor @Published var state: State = .empty
 
     private let service: ApiService
     private var fetchId: String?
@@ -38,7 +38,7 @@ class AnimeViewModel: ObservableObject {
     }
 
     func fetchData(fromStart: Bool = false) async throws {
-        switch state {
+        switch await state {
         case .empty, .error:
             await fetchDataFromStart()
         case .loading:
