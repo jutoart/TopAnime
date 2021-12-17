@@ -102,8 +102,6 @@
 				C62E8D292769D08800EAF267 /* AnimeModel.swift */,
 				C62E8D232768F7AE00EAF267 /* AnimeRawModel.swift */,
 				C62E8D2B2769D45900EAF267 /* AnimeType.swift */,
-				C62E8D2D2769D62200EAF267 /* AnimeViewModel.swift */,
-				C6A0475D276B0A31004CDD8F /* PersistenceViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -151,6 +149,7 @@
 				C6A04758276AD96A004CDD8F /* Models */,
 				C6A0475A276AD986004CDD8F /* Services */,
 				C6A04759276AD977004CDD8F /* SupportingFiles */,
+				ED99C93F276C87A300FB65A3 /* ViewModels */,
 				C6A04757276AD960004CDD8F /* Views */,
 			);
 			path = TopAnime;
@@ -172,6 +171,15 @@
 				C6A0475F276B0AAB004CDD8F /* PersistenceViewModelTests.swift */,
 			);
 			path = TopAnimeTests;
+			sourceTree = "<group>";
+		};
+		ED99C93F276C87A300FB65A3 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C62E8D2D2769D62200EAF267 /* AnimeViewModel.swift */,
+				C6A0475D276B0A31004CDD8F /* PersistenceViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
