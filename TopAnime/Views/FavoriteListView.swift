@@ -18,18 +18,22 @@ struct FavoriteListView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 16) {
-                    ForEach(animeModels) { animeModel in
-                        AnimeView(animeModel: animeModel,
-                                  isRankHidden: true,
-                                  isFavorite: persistenceViewModel.favorites[animeModel.id] != nil) { (animeModel, isFavorite) in
-                            persistenceViewModel.setAnimeModel(animeModel, isFavorite: isFavorite)
+            if animeModels.isEmpty {
+                InfoView(image: Constant.EmptyImage, message: Constant.EmptyMessage)
+            } else {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 16) {
+                        ForEach(animeModels) { animeModel in
+                            AnimeView(animeModel: animeModel,
+                                      isRankHidden: true,
+                                      isFavorite: persistenceViewModel.favorites[animeModel.id] != nil) { (animeModel, isFavorite) in
+                                persistenceViewModel.setAnimeModel(animeModel, isFavorite: isFavorite)
+                            }
                         }
                     }
+                    .padding(.horizontal)
+                    .padding(.top, 72)
                 }
-                .padding(.horizontal)
-                .padding(.top, 72)
             }
             HStack {
                 Button {
@@ -51,5 +55,14 @@ struct FavoriteListView: View {
 struct FavoriteListView_Previews: PreviewProvider {
     static var previews: some View {
         FavoriteListView(persistenceViewModel: .init())
+    }
+}
+
+// MARK: - Constants
+
+extension FavoriteListView {
+    private enum Constant {
+        static let EmptyImage = SwiftUI.Image(systemName: "magnifyingglass")
+        static let EmptyMessage = "No Data"
     }
 }
