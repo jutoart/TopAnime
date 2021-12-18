@@ -8,6 +8,7 @@
 
 import Foundation
 
+@MainActor
 class AnimeViewModel: ObservableObject {
     enum State: Equatable {
         case empty
@@ -33,12 +34,8 @@ class AnimeViewModel: ObservableObject {
         self.service = service
     }
 
-    @MainActor func updateState(_ state: State) {
-        self.state = state
-    }
-
     func fetchData(fromStart: Bool = false) async throws {
-        switch await state {
+        switch state {
         case .empty, .error:
             await fetchDataFromStart()
         case .loading:
@@ -55,7 +52,7 @@ class AnimeViewModel: ObservableObject {
                 guard !isEndOFData else { return }
 
                 let nextPage = currentPage + 1
-                await updateState(.loading(currentAnimeModels, nextPage))
+                state = .loading(currentAnimeModels, nextPage)
 
                 let currentFetchId = UUID().uuidString
                 fetchId = currentFetchId
@@ -63,11 +60,11 @@ class AnimeViewModel: ObservableObject {
                 do {
                     let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: nextPage)
                     guard currentFetchId == fetchId else { return }
-                    await updateState(.normal(currentAnimeModels + animeModels, nextPage))
+                    state = .normal(currentAnimeModels + animeModels, nextPage)
                 } catch {
                     // cannot load more anymore
                     guard currentFetchId == fetchId else { return }
-                    await updateState(.normal(currentAnimeModels, currentPage))
+                    state = .normal(currentAnimeModels, currentPage)
                     isEndOFData = true
                 }
             }
@@ -75,7 +72,7 @@ class AnimeViewModel: ObservableObject {
     }
 
     private func fetchDataFromStart() async {
-        await updateState(.loading([], Constant.PageStart))
+        state = .loading([], Constant.PageStart)
 
         let currentFetchId = UUID().uuidString
         fetchId = currentFetchId
@@ -84,10 +81,10 @@ class AnimeViewModel: ObservableObject {
         do {
             let animeModels = try await service.fetchTopAnime(type: type, subType: subType, page: Constant.PageStart)
             guard currentFetchId == fetchId else { return }
-            await updateState(.normal(animeModels, Constant.PageStart))
+            state = .normal(animeModels, Constant.PageStart)
         } catch {
             guard currentFetchId == fetchId else { return }
-            await updateState(.error(error.localizedDescription))
+            state = .error(error.localizedDescription)
         }
     }
 }

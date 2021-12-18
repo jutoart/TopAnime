@@ -12,15 +12,21 @@ import Combine
 
 class AnimeViewModelTests: XCTestCase {
     private let apiServiceMock = ApiServiceMock()
-    private lazy var sut = AnimeViewModel(service: apiServiceMock)
+    private var sut: AnimeViewModel!
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
         apiServiceMock.result = nil
+        sut = await MainActor.run {
+            AnimeViewModel(service: apiServiceMock)
+        }
     }
 
     func testFetchDataStateEmpty() async {
         apiServiceMock.result = .success(Constant.TestAnimeModels)
-        await sut.updateState(.empty)
+
+        await MainActor.run {
+            sut.state = .empty
+        }
 
         do {
             try await sut.fetchData()
@@ -40,7 +46,10 @@ class AnimeViewModelTests: XCTestCase {
 
     func testFetchDataStateLoading() async {
         apiServiceMock.result = .success(Constant.TestAnimeModels)
-        await sut.updateState(.loading([], 1))
+
+        await MainActor.run {
+            sut.state = .loading([], 1)
+        }
 
         do {
             try await sut.fetchData()
@@ -66,7 +75,10 @@ class AnimeViewModelTests: XCTestCase {
     func testFetchDataStateNormal() async {
         // load more case
         apiServiceMock.result = .success(Constant.TestAnimeModels)
-        await sut.updateState(.normal(Constant.TestAnimeModels, 1))
+
+        await MainActor.run {
+            sut.state = .normal(Constant.TestAnimeModels, 1)
+        }
 
         do {
             try await sut.fetchData()
@@ -92,7 +104,10 @@ class AnimeViewModelTests: XCTestCase {
     func testFetchDataStateError() async {
         // result should be the same with the empty case
         apiServiceMock.result = .success(Constant.TestAnimeModels)
-        await sut.updateState(.error(Constant.TestErrorDescription))
+
+        await MainActor.run {
+            sut.state = .error(Constant.TestErrorDescription)
+        }
 
         do {
             try await sut.fetchData()
@@ -115,7 +130,9 @@ class AnimeViewModelTests: XCTestCase {
 
         // no matter what current state is, fetch data from start will have the same next state if fetch successfully
         for state in [AnimeViewModel.State.empty, .loading([], 1), .normal(Constant.TestAnimeModels, 1), .error(Constant.TestErrorDescription)] {
-            await sut.updateState(state)
+            await MainActor.run {
+                sut.state = state
+            }
 
             do {
                 try await sut.fetchData(fromStart: true)
@@ -136,7 +153,10 @@ class AnimeViewModelTests: XCTestCase {
 
     func testFetchDataErrorStateEmpty() async {
         apiServiceMock.result = .failure(.apiError)
-        await sut.updateState(.empty)
+
+        await MainActor.run {
+            sut.state = .empty
+        }
 
         do {
             try await sut.fetchData()
@@ -155,7 +175,10 @@ class AnimeViewModelTests: XCTestCase {
     func testFetchDataErrorStateNormal() async {
         // load more case
         apiServiceMock.result = .failure(.apiError)
-        await sut.updateState(.normal(Constant.TestAnimeModels, 1))
+
+        await MainActor.run {
+            sut.state = .normal(Constant.TestAnimeModels, 1)
+        }
 
         do {
             try await sut.fetchData()
@@ -176,7 +199,10 @@ class AnimeViewModelTests: XCTestCase {
     func testFetchDataFromStartErrorStateNormal() async {
         // not load more case
         apiServiceMock.result = .failure(.apiError)
-        await sut.updateState(.normal(Constant.TestAnimeModels, 1))
+
+        await MainActor.run {
+            sut.state = .normal(Constant.TestAnimeModels, 1)
+        }
 
         do {
             try await sut.fetchData(fromStart: true)
@@ -194,7 +220,10 @@ class AnimeViewModelTests: XCTestCase {
 
     func testFetchDataErrorStateError() async {
         apiServiceMock.result = .failure(.apiError)
-        await sut.updateState(.error(Constant.TestErrorDescription))
+
+        await MainActor.run {
+            sut.state = .error(Constant.TestErrorDescription)
+        }
 
         do {
             try await sut.fetchData()
