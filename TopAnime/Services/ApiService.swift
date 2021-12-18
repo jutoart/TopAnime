@@ -56,8 +56,7 @@ class ApiService {
         do {
             let animeRawModel = try Constant.JsonDecoder.decode(AnimeRawModel.self, from: data)
             return animeRawModel.top.map { AnimeModel(from: $0) }
-        } catch let error {
-            print(error)
+        } catch {
             throw ApiServiceError.invalidData
         }
     }
